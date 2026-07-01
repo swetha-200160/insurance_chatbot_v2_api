@@ -116,28 +116,29 @@ def initialize_qa_chain(vector_store, vector_store1=None, temp_file: bool = Fals
         # k=5, 
         # return_messages=True,
         # output_key="answer"
-        # )
+        # 
 import os
 
-groq_api_key = os.getenv("GROQ_API_KEY")
+try:
+    groq_api_key = os.getenv("GROQ_API_KEY")
+except Exception as e:
+    print("Error:", e)
+    groq_api_key = None
 
-contextualize_q_prompt = ChatPromptTemplate.from_messages(
+
+history_aware_retriever = create_history_aware_retriever(
+    llm,
+    retriever,
+    contextualize_q_prompt
+)
+
+qa_prompt = ChatPromptTemplate.from_messages(
     [
-        ("system", retriever_prompt),
-        MessagesPlaceholder(variable_name="chat_history"),
-        ("human", "{input}")
+        ("system", system_prompt),
+        MessagesPlaceholder("chat_history"),
+        ("human", "{input}"),
     ]
 )
-            )
-        history_aware_retriever = create_history_aware_retriever(llm,retriver,contextualize_q_prompt)
-
-        qa_prompt = ChatPromptTemplate.from_messages(
-            [
-                ("system", system_prompt),
-                MessagesPlaceholder("chat_history"),
-                ("human", "{input}"),
-            ]
-        )
 
         question_answer_chain = create_stuff_documents_chain(llm, qa_prompt)
         rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
