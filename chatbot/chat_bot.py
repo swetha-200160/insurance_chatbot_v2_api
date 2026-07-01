@@ -120,21 +120,12 @@ def initialize_qa_chain(vector_store, vector_store1=None, temp_file: bool = Fals
 
       import os
 
-      groq_api_key = os.getenv("GROQ_API_KEY")
+def build_chain():
+    groq_api_key = os.getenv("GROQ_API_KEY")
 
-        # prompt = PromptTemplate(
-        #     input_variables=["chat_history", "question", "context"],
-        #     template=INSURANCE_PROMPT_TEMPLATE
-        # )
+    retriever = en_retriever(vector_store, vector_store1, temp_file)
 
-        retriver = en_retriver(vector_store, vector_store1, temp_file)
-
-        # qa_chain = ConversationalRetrievalChain.from_llm(
-        #         llm=llm,
-        #         retriever=retriver,
-        #         memory=memory,
-        #         combine_docs_chain_kwargs={"prompt": prompt},
-        #     )
+    return retriever
 
         contextualize_q_prompt  = ChatPromptTemplate.from_messages(
             [
