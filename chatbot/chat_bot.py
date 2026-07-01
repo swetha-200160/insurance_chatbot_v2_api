@@ -117,16 +117,13 @@ def initialize_qa_chain(vector_store, vector_store1=None, temp_file: bool = Fals
         # return_messages=True,
         # output_key="answer"
         # )
+import os
 
-      import os
-
-def build_chain():
+try:
     groq_api_key = os.getenv("GROQ_API_KEY")
-
-    retriever = en_retriever(vector_store, vector_store1, temp_file)
-
-    return retriever
-
+except Exception as e:
+    print("Error:", e)
+    groq_api_key = None
         contextualize_q_prompt  = ChatPromptTemplate.from_messages(
             [
                 ("system", retriever_prompt),
