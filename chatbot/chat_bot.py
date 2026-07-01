@@ -120,11 +120,7 @@ def initialize_qa_chain(vector_store, vector_store1=None, temp_file: bool = Fals
 
       import os
 
-try:
-    groq_api_key = os.getenv("GROQ_API_KEY")
-except Exception as e:
-    print("Error:", e)
-    groq_api_key = None
+      groq_api_key = os.getenv("GROQ_API_KEY")
 
         # prompt = PromptTemplate(
         #     input_variables=["chat_history", "question", "context"],
