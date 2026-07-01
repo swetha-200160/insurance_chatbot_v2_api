@@ -119,17 +119,15 @@ def initialize_qa_chain(vector_store, vector_store1=None, temp_file: bool = Fals
         # )
 import os
 
-try:
-    groq_api_key = os.getenv("GROQ_API_KEY")
-except Exception as e:
-    print("Error:", e)
-    groq_api_key = None
-        contextualize_q_prompt  = ChatPromptTemplate.from_messages(
-            [
-                ("system", retriever_prompt),
-                MessagesPlaceholder(variable_name="chat_history"),
-                ("human", "{input}"),
-                ]
+groq_api_key = os.getenv("GROQ_API_KEY")
+
+contextualize_q_prompt = ChatPromptTemplate.from_messages(
+    [
+        ("system", retriever_prompt),
+        MessagesPlaceholder(variable_name="chat_history"),
+        ("human", "{input}")
+    ]
+)
             )
         history_aware_retriever = create_history_aware_retriever(llm,retriver,contextualize_q_prompt)
 
