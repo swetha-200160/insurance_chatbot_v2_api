@@ -119,14 +119,12 @@ def initialize_qa_chain(vector_store, vector_store1=None, temp_file: bool = Fals
         # )
 
       import os
-groq_api_key = os.getenv("GROQ_API_KEY")
 
-        # Lower temperature to reduce hallucinations (0.0 = most factual, 1.0 = most creative)
-        llm = ChatGroq(
-            temperature=0.1,  # Reduced from 0.3 to minimize hallucinations
-            api_key=groq_api_key,
-            model_name="llama-3.1-8b-instant"
-        )
+try:
+    groq_api_key = os.getenv("GROQ_API_KEY")
+except Exception as e:
+    print("Error:", e)
+    groq_api_key = None
 
         # prompt = PromptTemplate(
         #     input_variables=["chat_history", "question", "context"],
