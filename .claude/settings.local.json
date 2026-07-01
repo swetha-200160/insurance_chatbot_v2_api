@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python create_single_table_poc.py:*)",
+      "Bash(pip install:*)",
+      "Bash(python setup_new_preauth_db.py:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

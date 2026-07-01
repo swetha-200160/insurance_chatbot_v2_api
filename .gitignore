@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+.env
+*.log
+logs/
+faiss_index/
+faiss_index_1/
+preauth-/
