@@ -28,7 +28,8 @@ RUN pip install --no-cache-dir \
     langchain \
     langchain-core \
     langchain-community \
-    langchain-groq
+    langchain-groq \
+    langchain-huggingface
 
 # ---------- Project dependencies ----------
 RUN if [ -f requirements_final.txt ]; then \
