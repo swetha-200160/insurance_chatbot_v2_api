@@ -107,25 +107,29 @@ def en_retriver(vector_store, vector_store1, temp_file:bool = False):
     if temp_file:
         retriever_2 = vector_store1.as_retriever(search_type="similarity", search_kwargs={"k": 5})
         return EnsembleRetriever(retrievers=[retriever_1, retriever_2], weights=[0.05,0.95])
-    return retriever_1
+    import os
 
 def initialize_qa_chain(vector_store, vector_store1=None, temp_file: bool = False):
     try:
-        # memory = ConversationBufferWindowMemory(
-        # memory_key="chat_history",
-        # k=5, 
-        # return_messages=True,
-        # output_key="answer"
-        # 
-import os
+        memory = ConversationBufferWindowMemory(
+            memory_key="chat_history",
+            k=5,
+            return_messages=True,
+            output_key="answer"
+        )
+
+        # Rest of your code...
+
+    except Exception as e:
+        print("Error:", e)
+        return None
+
 
 try:
     groq_api_key = os.getenv("GROQ_API_KEY")
 except Exception as e:
     print("Error:", e)
     groq_api_key = None
-
-
 history_aware_retriever = create_history_aware_retriever(
     llm,
     retriever,
