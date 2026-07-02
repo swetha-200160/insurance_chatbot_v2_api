@@ -109,6 +109,13 @@ def en_retriver(vector_store, vector_store1, temp_file:bool = False):
         return EnsembleRetriever(retrievers=[retriever_1, retriever_2], weights=[0.05,0.95])
     import os
 
+try:
+    groq_api_key = os.getenv("GROQ_API_KEY")
+except Exception as e:
+    print("Error:", e)
+    groq_api_key = None
+
+
 def initialize_qa_chain(vector_store, vector_store1=None, temp_file: bool = False):
     try:
         memory = ConversationBufferWindowMemory(
@@ -118,42 +125,27 @@ def initialize_qa_chain(vector_store, vector_store1=None, temp_file: bool = Fals
             output_key="answer"
         )
 
-        # Rest of your code...
+        history_aware_retriever = create_history_aware_retriever(
+            llm,
+            retriever,
+            contextualize_q_prompt
+        )
 
-    except Exception as e:
-        print("Error:", e)
-        return None
+        question_answer_chain = create_stuff_documents_chain(
+            llm,
+            qa_prompt
+        )
 
-
-try:
-    groq_api_key = os.getenv("GROQ_API_KEY")
-except Exception as e:
-    print("Error:", e)
-    groq_api_key = None
-history_aware_retriever = create_history_aware_retriever(
-    llm,
-    retriever,
-    contextualize_q_prompt
-)
-
-qa_prompt = ChatPromptTemplate.from_messages(
-    [
-        ("system", system_prompt),
-        MessagesPlaceholder("chat_history"),
-        ("human", "{input}"),
-    ]
-)
-
-        question_answer_chain = create_stuff_documents_chain(llm, qa_prompt)
-        rag_chain = create_retrieval_chain(history_aware_retriever, question_answer_chain)
+        rag_chain = create_retrieval_chain(
+            history_aware_retriever,
+            question_answer_chain
+        )
 
         return rag_chain
+
     except Exception as e:
         print(f"Error initializing QA chain: {str(e)}")
         return None
-
-
-
 
 
 
