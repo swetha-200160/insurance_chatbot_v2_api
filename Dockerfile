@@ -24,13 +24,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # ---------- Core Python dependencies (IMPORTANT FIX) ----------
 RUN pip install --no-cache-dir \
     fastapi \
-    uvicorn \
-    langchain \
-    langchain-core \
-    langchain-community \
-    langchain-groq \
-    langchain-huggingface
-
+    uvicorn
 # ---------- Project dependencies ----------
 RUN if [ -f requirements_final.txt ]; then \
         pip install --no-cache-dir -r requirements_final.txt; \
